@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Guru PMM+ | GELAS DIGITAL Lapis 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bitter:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1d4ed8;--blue2:#eff6ff;--blue3:#bfdbfe;--blue4:#1e40af;
+  --violet:#7c3aed;--violet2:#f5f3ff;
+  --green:#16a34a;--green2:#dcfce7;
+  --amber:#d97706;--amber2:#fef3e2;
+  --red:#dc2626;--red2:#fee2e2;
+  --teal:#0d9488;--teal2:#ccfbf1;
+  --ink:#1c1917;--ink2:#44403c;--ink3:#78716c;
+  --bg:#f1f5f9;--white:#fff;--border:#e2e8f0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);}
+
+.topbar{background:var(--blue4);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.topbar-back{color:rgba(255,255,255,0.7);font-size:13px;font-weight:700;text-decoration:none;}
+.topbar-back:hover{color:white;}
+.topbar-title{font-size:15px;font-weight:900;color:white;}
+.topbar-badge{background:rgba(255,255,255,0.15);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.user-avatar{width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:white;}
+.user-info{text-align:right;}
+.user-name{font-size:13px;font-weight:700;color:white;}
+.user-sub{font-size:11px;color:rgba(255,255,255,0.6);}
+
+.body-layout{max-width:1100px;margin:24px auto;padding:0 24px;display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
+
+/* SIDEBAR KIRI */
+.left-panel{}
+.cert-card{background:var(--blue4);border-radius:12px;padding:18px;margin-bottom:14px;color:white;}
+.cert-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;}
+.cert-val{font-family:'Bitter',serif;font-size:18px;font-weight:700;margin-bottom:2px;}
+.cert-note{font-size:11px;opacity:0.6;}
+.prog-mini{margin-top:10px;}
+.prog-mini-bar{background:rgba(255,255,255,0.2);border-radius:4px;height:6px;overflow:hidden;}
+.prog-mini-fill{height:100%;background:rgba(255,255,255,0.8);border-radius:4px;transition:width 0.8s ease;}
+.prog-mini-note{font-size:11px;opacity:0.6;margin-top:4px;}
+
+.side-card{background:var(--white);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:14px;}
+.side-card-header{padding:10px 16px;border-bottom:1px solid var(--border);font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink3);}
+.side-card-body{padding:14px 16px;}
+
+.stat-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.sm-item{background:var(--bg);border-radius:8px;padding:10px;text-align:center;}
+.sm-val{font-family:'Bitter',serif;font-size:22px;font-weight:700;line-height:1;color:var(--blue);}
+.sm-label{font-size:10px;color:var(--ink3);font-weight:700;margin-top:2px;}
+
+.unit-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.unit-row:last-child{border-bottom:none;}
+.unit-bar{flex:1;background:var(--bg);border-radius:3px;height:5px;overflow:hidden;}
+.unit-fill{height:100%;border-radius:3px;}
+.unit-pct{font-size:11px;font-weight:800;width:28px;text-align:right;font-family:'Bitter',serif;}
+.unit-name{font-size:11px;font-weight:700;width:80px;flex-shrink:0;color:var(--ink2);}
+
+.adaptive-box{background:linear-gradient(135deg,var(--blue2),var(--violet2));border-radius:10px;padding:14px;border:1px solid var(--blue3);}
+.adaptive-tag{font-size:10px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.adaptive-title{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.adaptive-desc{font-size:11px;color:var(--ink2);line-height:1.6;font-weight:600;}
+.adaptive-highlight{background:white;border-radius:6px;padding:8px;margin-top:8px;font-size:11px;font-weight:700;color:var(--blue4);}
+
+/* MAIN */
+.main-panel{}
+.section-title-wrap{margin-bottom:14px;}
+.section-tag{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.section-title{font-family:'Bitter',serif;font-size:22px;font-weight:700;color:var(--ink);}
+
+/* ACTIVE MODULE */
+.active-module{background:white;border-radius:12px;border:2px solid var(--blue);overflow:hidden;margin-bottom:16px;}
+.am-header{background:var(--blue);padding:12px 18px;display:flex;align-items:center;gap:10px;}
+.am-icon{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.am-meta{flex:1;}
+.am-title{font-size:14px;font-weight:800;color:white;margin-bottom:2px;}
+.am-unit{font-size:11px;color:rgba(255,255,255,0.7);}
+.am-badge{background:rgba(255,255,255,0.2);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.am-body{padding:18px;}
+.am-prog-label{font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:6px;display:flex;justify-content:space-between;}
+.am-prog-bar{background:var(--bg);border-radius:4px;height:10px;overflow:hidden;margin-bottom:16px;}
+.am-prog-fill{height:100%;background:var(--blue);border-radius:4px;transition:width 0.8s ease;}
+
+/* VIDEO SIMULASI */
+.video-sim{background:var(--ink);border-radius:10px;overflow:hidden;margin-bottom:16px;}
+.video-header{background:rgba(255,255,255,0.06);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+.video-dot{width:10px;height:10px;border-radius:50%;}
+.video-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);}
+.video-body{padding:16px;aspect-ratio:16/7;position:relative;display:flex;align-items:center;justify-content:center;}
+.video-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0f172a,#1e293b);overflow:hidden;}
+.video-grid{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 40px);}
+.video-content{position:relative;z-index:2;text-align:center;padding:20px;}
+.video-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;}
+.video-scene-title{font-family:'Bitter',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+.video-scene-sub{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;max-width:400px;}
+.video-controls{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.06);}
+.vc-btn{background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:background 0.15s;font-family:'Nunito',sans-serif;}
+.vc-btn:hover{background:rgba(255,255,255,0.2);}
+.vc-btn.play-btn{width:40px;height:40px;background:var(--blue);font-size:15px;}
+.vc-progress{flex:1;background:rgba(255,255,255,0.15);border-radius:3px;height:4px;cursor:pointer;position:relative;}
+.vc-fill{height:100%;background:var(--blue);border-radius:3px;transition:width 0.1s linear;}
+.vc-time{font-size:11px;color:rgba(255,255,255,0.6);font-weight:700;font-family:'Bitter',serif;white-space:nowrap;}
+.vc-scene-btns{display:flex;gap:4px;}
+.scene-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;cursor:pointer;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.scene-btn:hover,.scene-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
+
+/* ELKPD STEP */
+.elkpd-steps{margin-bottom:14px;}
+.elkpd-title{font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.step-flow{display:flex;align-items:stretch;gap:0;}
+.step-item{flex:1;background:var(--bg);border-radius:8px;padding:10px;border:1px solid var(--border);margin:0 3px;position:relative;text-align:center;}
+.step-item.done{background:var(--green2);border-color:#86efac;}
+.step-item.active{background:var(--blue2);border-color:var(--blue3);box-shadow:0 0 0 2px var(--blue);}
+.step-num{font-size:10px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;}
+.step-num.done{color:var(--green);}
+.step-num.active{color:var(--blue);}
+.step-num.pending{color:var(--ink3);}
+.step-desc{font-size:11px;font-weight:700;line-height:1.4;color:var(--ink2);}
+.step-item.active .step-desc{color:var(--blue4);}
+.step-arr{display:flex;align-items:center;color:var(--ink3);font-size:13px;padding:0 2px;}
+
+.alur-data{background:var(--ink);border-radius:10px;padding:14px 18px;}
+.alur-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+.alur-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.alur-node{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:7px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);white-space:nowrap;}
+.alur-node.active{background:var(--teal);border-color:var(--teal);color:white;}
+.alur-sep{color:rgba(255,255,255,0.3);font-size:12px;}
+.alur-note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:8px;font-style:italic;}
+
+/* MODUL LIST */
+.modul-list{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.modul-list-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modul-list-title{font-size:12px;font-weight:800;color:var(--ink);}
+.modul-list-unit{font-size:11px;color:var(--ink3);font-weight:700;}
+.modul-row{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);transition:background 0.15s;cursor:pointer;}
+.modul-row:last-child{border-bottom:none;}
+.modul-row:hover:not(.active-row){background:var(--bg);}
+.modul-row.active-row{background:var(--blue2);}
+.modul-icon-sm{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.modul-icon-sm.done{background:var(--green2);}
+.modul-icon-sm.active{background:var(--blue2);border:1.5px solid var(--blue);}
+.modul-icon-sm.locked{background:var(--bg);}
+.modul-info{flex:1;}
+.modul-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.modul-name.muted{color:var(--ink3);font-weight:600;}
+.modul-dur{font-size:11px;color:var(--ink3);font-weight:600;}
+.modul-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;flex-shrink:0;}
+.modul-badge.done{background:var(--green2);color:var(--green);}
+.modul-badge.active{background:var(--blue2);color:var(--blue);}
+.modul-badge.locked{background:var(--bg);color:var(--ink3);}
+
+/* PETA TERINTEGRASI */
+.peta-card{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-top:16px;}
+.peta-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.peta-title{font-size:12px;font-weight:800;color:var(--ink);}
+.peta-source{font-size:11px;color:var(--teal);font-weight:700;}
+.peta-body{padding:16px 18px;}
+.peta-note{font-size:12px;color:var(--ink3);font-weight:600;margin-bottom:12px;line-height:1.6;}
+.peta-frame-wrap{border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg);}
+.peta-header-bar{background:var(--ink);padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.peta-header-bar-dot{width:10px;height:10px;border-radius:50%;}
+.peta-url{font-size:11px;color:rgba(255,255,255,0.5);flex:1;font-family:'Bitter',serif;}
+.peta-map{width:100%;height:280px;position:relative;overflow:hidden;}
+.peta-map-bg{width:100%;height:100%;background:linear-gradient(180deg,#a8d5f5 0%,#87c4ef 40%,#6bb3e8 100%);}
+.peta-map-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.map-embed-note{text-align:center;color:var(--ink2);}
+.map-embed-icon{font-size:32px;margin-bottom:8px;}
+.map-embed-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.map-embed-desc{font-size:12px;color:var(--ink3);font-weight:600;line-height:1.6;max-width:320px;}
+.map-embed-btn{margin-top:12px;background:var(--teal);color:white;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;display:inline-block;}
+.map-embed-btn:hover{background:#0f766e;}
+.peta-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;}
+.peta-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3);font-weight:700;}
+.peta-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+footer{background:var(--ink);padding:24px;margin-top:32px;}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-logo{font-family:'Bitter',serif;font-size:15px;font-weight:700;color:white;}
+.footer-logo span{color:#4a8c5c;}
+.footer-links{display:flex;gap:20px;list-style:none;}
+.footer-links a{font-size:12px;color:rgba(255,255,255,0.5);text-decoration:none;}
+.footer-links a:hover{color:white;}
+.footer-meta{font-size:11px;color:rgba(255,255,255,0.35);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-back">&#8592; Beranda</a>
+    <span class="topbar-title">GELAS DIGITAL: Platform Guru PMM+</span>
+    <span class="topbar-badge">Lapis 2</span>
+  </div>
+  <div class="topbar-right">
+    <div>
+      <div class="user-name">Bu Siti Rahayu, S.Pd</div>
+      <div class="user-sub">SDN 12 Buleleng, Bali</div>
+    </div>
+    <div class="user-avatar">SR</div>
+  </div>
+</div>
+
+<div class="body-layout">
+  <aside class="left-panel">
+    <div class="cert-card">
+      <div class="cert-label">Sertifikasi aktif</div>
+      <div class="cert-val">Level 2 Literasi Adaptif</div>
+      <div class="cert-note">48 modul tersisa menuju Level 3</div>
+      <div class="prog-mini">
+        <div class="prog-mini-bar"><div class="prog-mini-fill" style="width:52%"></div></div>
+        <div class="prog-mini-note">52 dari 100 modul selesai</div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-card-header">Statistik saya</div>
+      <div class="side-card-body">
+        <div class="stat-mini">
+          <div class="sm-item"><div class="sm-val">52</div><div class="sm-label">Modul selesai</div></div>
+          <div class="sm-item"><div class="sm-val" style="color:var(--amber)">12 hr</div><div class="sm-label">Streak belajar</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-card-header">Progres per unit</div>
+      <div class="side-card-body">
+        <div class="unit-row">
+          <span class="unit-name">Unit 1 Fondasi</span>
+          <div class="unit-bar"><div class="unit-fill" style="width:100%;background:var(--green)"></div></div>
+          <span class="unit-pct" style="color:var(--green)">100%</span>
+        </div>
+        <div class="unit-row">
+          <span class="unit-name">Unit 2 Konten Digital</span>
+          <div class="unit-bar"><div class="unit-fill" style="width:60%;background:var(--blue)"></div></div>
+          <span class="unit-pct" style="color:var(--blue)">60%</span>
+        </div>
+        <div class="unit-row">
+          <span class="unit-name">Unit 3 Scaffolding</span>
+          <div class="unit-bar"><div class="unit-fill" style="width:0%"></div></div>
+          <span class="unit-pct" style="color:var(--ink3)">Terkunci</span>
+        </div>
+        <div class="unit-row">
+          <span class="unit-name">Unit 4 Evaluasi Data</span>
+          <div class="unit-bar"><div class="unit-fill" style="width:0%"></div></div>
+          <span class="unit-pct" style="color:var(--ink3)">Terkunci</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-card-header">Rekomendasi adaptif</div>
+      <div class="side-card-body">
+        <div class="adaptive-box">
+          <div class="adaptive-tag">Berdasarkan data dashboard wilayahmu</div>
+          <div class="adaptive-title">Modul berikutnya untukmu</div>
+          <div class="adaptive-desc">Dashboard mendeteksi zona kuning AKM di Kab. Buleleng. Sistem merekomendasikan Unit 2 Sesi 4 tentang thread berita untuk meningkatkan skor literasi kelasmu.</div>
+          <div class="adaptive-highlight">AKM sekolahmu: 44% | Target Fase 2: 59%</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+    <div class="section-title-wrap">
+      <div class="section-tag">Lapis 2: Penguatan Kompetensi Guru via PMM+</div>
+      <h2 class="section-title">Modul aktif saat ini</h2>
+    </div>
+
+    <div class="active-module">
+      <div class="am-header">
+        <div class="am-icon">&#127891;</div>
+        <div class="am-meta">
+          <div class="am-title">Menggunakan infografis sebagai bahan literasi kritis</div>
+          <div class="am-unit">Sesi 3 dari 5 | 12 menit | Scaffolding Literasi Digital | Media-Based Critical Reading</div>
+        </div>
+        <span class="am-badge">Sedang berjalan</span>
+      </div>
+      <div class="am-body">
+        <div class="am-prog-label">
+          <span>Progres modul ini</span>
+          <span style="font-family:'Bitter',serif;font-weight:700;color:var(--blue)">60%</span>
+        </div>
+        <div class="am-prog-bar"><div class="am-prog-fill" id="am-fill" style="width:0%"></div></div>
+
+        <!-- VIDEO SIMULASI -->
+        <div class="video-sim">
+          <div class="video-header">
+            <div class="video-dot" style="background:#ff5f57"></div>
+            <div class="video-dot" style="background:#febc2e"></div>
+            <div class="video-dot" style="background:#28c840"></div>
+            <span class="video-title">Simulasi Modul: Menggunakan Infografis di Kelas</span>
+          </div>
+          <div class="video-body">
+            <div class="video-bg"></div>
+            <div class="video-grid"></div>
+            <div class="video-content" id="vc">
+              <div class="video-label">Sesi 3: Scaffolding Literasi Digital</div>
+              <div class="video-scene-title" id="vt">Langkah 1: Pilih infografis yang tepat</div>
+              <div class="video-scene-sub" id="vs">Guru memilih infografis dari bank konten yang sudah dikurasi GELAS DIGITAL sesuai usia dan konteks lokal siswa. Pastikan konten relevan dengan keseharian mereka.</div>
+            </div>
+          </div>
+          <div class="video-controls">
+            <button class="vc-btn" onclick="prevScene()">&#9664;&#9664;</button>
+            <button class="vc-btn play-btn" id="play-btn" onclick="togglePlay()">&#9654;</button>
+            <button class="vc-btn" onclick="nextScene()">&#9654;&#9654;</button>
+            <div class="vc-progress" onclick="seekVid(event)">
+              <div class="vc-fill" id="vc-fill" style="width:0%"></div>
+            </div>
+            <span class="vc-time" id="vc-time">0:00 / 12:00</span>
+            <div class="vc-scene-btns">
+              <button class="scene-btn active" id="sb0" onclick="goScene(0)">1</button>
+              <button class="scene-btn" id="sb1" onclick="goScene(1)">2</button>
+              <button class="scene-btn" id="sb2" onclick="goScene(2)">3</button>
+              <button class="scene-btn" id="sb3" onclick="goScene(3)">4</button>
+              <button class="scene-btn" id="sb4" onclick="goScene(4)">5</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ELKPD FLOW -->
+        <div class="elkpd-steps">
+          <div class="elkpd-title">Alur e-LKPD yang dirancang guru dalam sesi ini</div>
+          <div class="step-flow">
+            <div class="step-item done">
+              <div class="step-num done">&#10003; Langkah 1</div>
+              <div class="step-desc">Pilih infografis dari bank konten</div>
+            </div>
+            <div class="step-arr">&#8594;</div>
+            <div class="step-item done">
+              <div class="step-num done">&#10003; Langkah 2</div>
+              <div class="step-desc">Siswa identifikasi klaim dan fakta</div>
+            </div>
+            <div class="step-arr">&#8594;</div>
+            <div class="step-item active">
+              <div class="step-num active">&#9658; Langkah 3</div>
+              <div class="step-desc">Verifikasi sumber bersama kelas</div>
+            </div>
+            <div class="step-arr">&#8594;</div>
+            <div class="step-item">
+              <div class="step-num pending">Langkah 4</div>
+              <div class="step-desc">Diskusi dan presentasi temuan</div>
+            </div>
+            <div class="step-arr">&#8594;</div>
+            <div class="step-item">
+              <div class="step-num pending">Langkah 5</div>
+              <div class="step-desc">Sinkronisasi data ke dashboard</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alur-data">
+          <div class="alur-label">Alur data otomatis antar lapis GELAS DIGITAL</div>
+          <div class="alur-flow">
+            <div class="alur-node">Aktivitas e-LKPD siswa</div>
+            <div class="alur-sep">&#9658;</div>
+            <div class="alur-node active">Rekap otomatis via PMM+</div>
+            <div class="alur-sep">&#9658;</div>
+            <div class="alur-node">Dashboard spasial Lapis 3</div>
+            <div class="alur-sep">&#9658;</div>
+            <div class="alur-node">Rekomendasi intervensi</div>
+          </div>
+          <div class="alur-note">Data dikirim otomatis setiap akhir sesi e-LKPD tanpa input manual guru.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODUL LIST -->
+    <div class="modul-list">
+      <div class="modul-list-header">
+        <span class="modul-list-title">Daftar modul: Unit 2 Konten Digital</span>
+        <span class="modul-list-unit">5 sesi | 60 menit total</span>
+      </div>
+      <div class="modul-row" onclick="alert('Modul sudah selesai. Lihat catatan di portofoliomu.')">
+        <div class="modul-icon-sm done">&#10003;</div>
+        <div class="modul-info">
+          <div class="modul-name">Apa itu literasi berbasis konten digital</div>
+          <div class="modul-dur">10 menit | Selesai 3 hari lalu</div>
+        </div>
+        <span class="modul-badge done">Selesai</span>
+      </div>
+      <div class="modul-row" onclick="alert('Modul sudah selesai kemarin!')">
+        <div class="modul-icon-sm done">&#10003;</div>
+        <div class="modul-info">
+          <div class="modul-name">Memilih konten digital yang tepat untuk siswa</div>
+          <div class="modul-dur">15 menit | Selesai kemarin</div>
+        </div>
+        <span class="modul-badge done">Selesai</span>
+      </div>
+      <div class="modul-row active-row">
+        <div class="modul-icon-sm active">&#9654;</div>
+        <div class="modul-info">
+          <div class="modul-name" style="color:var(--blue4)">Menggunakan infografis sebagai bahan literasi kritis</div>
+          <div class="modul-dur">12 menit | e-LKPD: Media-Based Critical Reading | Sedang berjalan</div>
+        </div>
+        <span class="modul-badge active">Aktif</span>
+      </div>
+      <div class="modul-row" onclick="alert('Selesaikan modul aktif dulu untuk membuka ini.')">
+        <div class="modul-icon-sm locked">&#128274;</div>
+        <div class="modul-info">
+          <div class="modul-name muted">Mengintegrasikan thread berita ke diskusi kelas</div>
+          <div class="modul-dur">14 menit | Terkunci</div>
+        </div>
+        <span class="modul-badge locked">Terkunci</span>
+      </div>
+      <div class="modul-row" onclick="alert('Selesaikan modul aktif dulu.')">
+        <div class="modul-icon-sm locked">&#128274;</div>
+        <div class="modul-info">
+          <div class="modul-name muted">Praktik: merancang sesi literasi digital pertama di kelas</div>
+          <div class="modul-dur">13 menit + kuis evaluasi | Terkunci</div>
+        </div>
+        <span class="modul-badge locked">Terkunci</span>
+      </div>
+    </div>
+
+    <!-- PETA TERINTEGRASI -->
+    <div class="peta-card">
+      <div class="peta-header">
+        <span class="peta-title">Peta sebaran rekomendasi modul berdasarkan indeks AKM wilayah</span>
+        <span class="peta-source">Sumber: Dapodik + Rapor Pendidikan AN</span>
+      </div>
+      <div class="peta-body">
+        <p class="peta-note">Dashboard Lapis 3 merekomendasikan modul yang berbeda untuk setiap guru berdasarkan kondisi wilayahnya. Guru di zona merah mendapat modul yang lebih intensif dibanding zona hijau.</p>
+        <div class="peta-frame-wrap">
+          <div class="peta-header-bar">
+            <div class="peta-header-bar-dot" style="background:#ff5f57"></div>
+            <div class="peta-header-bar-dot" style="background:#febc2e"></div>
+            <div class="peta-header-bar-dot" style="background:#28c840"></div>
+            <span class="peta-url">maps.google.com | GELAS DIGITAL | Peta Indeks Literasi Sekolah Pilot</span>
+          </div>
+          <div class="peta-map">
+            <div style="width:100%;height:100%;background:#e8f4f8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+              <div style="text-align:center;padding:20px;">
+                <div style="font-size:32px;margin-bottom:8px;">&#127759;</div>
+                <div style="font-family:'Bitter',serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;">Peta Interaktif Sebaran Sekolah Pilot</div>
+                <div style="font-size:12px;color:var(--ink3);font-weight:600;max-width:340px;line-height:1.6;margin-bottom:14px;">Dalam implementasi nyata, peta ini menampilkan 30 sekolah pilot dengan kode warna berdasarkan indeks AKM, terhubung ke Google Maps API dengan koordinat dari Dapodik.</div>
+                <a class="map-embed-btn" href="lapis3-dashboard.html">Lihat Dashboard Spasial Lengkap</a>
+              </div>
+              <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;padding:0 20px 16px;">
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);">
+                  <div style="width:14px;height:14px;background:#dc2626;border-radius:50%;"></div>Zona merah: AKM kurang 40%
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);">
+                  <div style="width:14px;height:14px;background:#d97706;border-radius:50%;"></div>Zona kuning: AKM 40-65%
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);">
+                  <div style="width:14px;height:14px;background:#16a34a;border-radius:50%;"></div>Zona hijau: AKM lebih dari 65%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">GELAS <span>DIGITAL</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="lapis1-elkpd.html">e-LKPD Siswa</a></li>
+      <li><a href="lapis3-dashboard.html">Dashboard Spasial</a></li>
+    </ul>
+    <div class="footer-meta">Muhamad Erlangga Saputra | PWK ITB | Litera Fest 2026</div>
+  </div>
+</footer>
+
+<script>
+window.onload = () => {
+  setTimeout(() => { document.getElementById('am-fill').style.width = '60%'; }, 400);
+};
+
+const scenes = [
+  { title: 'Langkah 1: Pilih infografis yang tepat', sub: 'Guru memilih infografis dari bank konten yang dikurasi GELAS DIGITAL sesuai usia dan konteks lokal siswa. Pastikan konten relevan dengan keseharian mereka.' },
+  { title: 'Langkah 2: Bagikan dan beri konteks', sub: 'Tampilkan infografis di layar kelas atau bagikan via platform. Berikan 2 menit untuk siswa membaca secara mandiri sebelum diskusi.' },
+  { title: 'Langkah 3: Pandu e-LKPD secara bertahap', sub: 'Gunakan panduan pertanyaan e-LKPD untuk memandu siswa: identifikasi klaim, pisahkan fakta dan opini, lalu verifikasi sumber. Scaffolding dari mudah ke sulit.' },
+  { title: 'Langkah 4: Fasilitasi diskusi kelas', sub: 'Siswa mempresentasikan temuan mereka. Guru memfasilitasi dengan pertanyaan lanjutan: "Mengapa kamu berpikir ini fakta?" dan "Apa yang bisa membuatmu yakin?"' },
+  { title: 'Langkah 5: Rekap dan sinkronisasi data', sub: 'Data keterlibatan siswa terekam otomatis oleh sistem. Guru hanya perlu menekan tombol "Akhiri Sesi" dan data akan dikirim ke Dashboard Spasial Lapis 3.' },
+];
+
+let currentScene = 0;
+let playing = false;
+let timer = null;
+let seconds = 0;
+const totalSec = 720;
+
+function updateScene(idx) {
+  currentScene = idx;
+  document.getElementById('vt').textContent = scenes[idx].title;
+  document.getElementById('vs').textContent = scenes[idx].sub;
+  for (let i = 0; i < 5; i++) {
+    const btn = document.getElementById('sb' + i);
+    if (btn) btn.className = i === idx ? 'scene-btn active' : 'scene-btn';
+  }
+}
+
+function nextScene() { if (currentScene < 4) updateScene(currentScene + 1); }
+function prevScene() { if (currentScene > 0) updateScene(currentScene - 1); }
+function goScene(idx) { updateScene(idx); }
+
+function togglePlay() {
+  playing = !playing;
+  const btn = document.getElementById('play-btn');
+  btn.innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+  if (playing) {
+    timer = setInterval(() => {
+      seconds = Math.min(seconds + 1, totalSec);
+      const pct = (seconds / totalSec) * 100;
+      document.getElementById('vc-fill').style.width = pct + '%';
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      document.getElementById('vc-time').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs} / 12:00`;
+      const sceneIdx = Math.floor((seconds / totalSec) * 5);
+      if (sceneIdx !== currentScene && sceneIdx < 5) updateScene(sceneIdx);
+      if (seconds >= totalSec) { clearInterval(timer); playing = false; btn.innerHTML = '&#9654;'; }
+    }, 100);
+  } else {
+    clearInterval(timer);
+  }
+}
+
+function seekVid(e) {
+  const bar = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  seconds = Math.floor(pct * totalSec);
+  document.getElementById('vc-fill').style.width = (pct * 100) + '%';
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  document.getElementById('vc-time').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs} / 12:00`;
+  const sceneIdx = Math.floor(pct * 5);
+  if (sceneIdx < 5) updateScene(sceneIdx);
+}
+</script>
+</body>
+</html>

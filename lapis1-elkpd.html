@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>e-LKPD Siswa | GELAS DIGITAL Lapis 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bitter:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #0d9488;
+  --teal-light: #ccfbf1;
+  --teal-dark: #0f766e;
+  --orange: #f97316;
+  --orange-light: #fff7ed;
+  --red: #dc2626;
+  --red-light: #fee2e2;
+  --green: #16a34a;
+  --green-light: #dcfce7;
+  --yellow: #ca8a04;
+  --yellow-light: #fefce8;
+  --ink: #1c1917;
+  --ink2: #44403c;
+  --ink3: #78716c;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --border: #e7e5e4;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--ink); }
+
+/* TOP BAR */
+.topbar {
+  background: var(--teal);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-back {
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topbar-back:hover { color: white; }
+.topbar-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.3px;
+}
+.topbar-badge {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: white;
+}
+.user-info { text-align: right; }
+.user-name { font-size: 13px; font-weight: 700; color: white; }
+.user-class { font-size: 11px; color: rgba(255,255,255,0.7); }
+
+/* PROGRESS BAR */
+.prog-wrap {
+  background: var(--teal-dark);
+  padding: 10px 24px;
+}
+.prog-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+.prog-steps { display: flex; align-items: center; gap: 6px; flex: 1; }
+.prog-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.step-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.step-circle.done { background: var(--green); color: white; }
+.step-circle.active { background: white; color: var(--teal-dark); box-shadow: 0 0 0 3px rgba(255,255,255,0.4); }
+.step-circle.pending { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); }
+.step-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); white-space: nowrap; }
+.step-label.active { color: white; }
+.step-sep { flex: 1; height: 2px; background: rgba(255,255,255,0.2); min-width: 16px; }
+.step-sep.done { background: var(--green); }
+.prog-pct { font-size: 13px; font-weight: 800; color: white; white-space: nowrap; }
+
+/* MAIN LAYOUT */
+.main-layout {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* SESSION HEADER */
+.session-header {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.session-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--teal-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.session-meta {}
+.session-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 3px;
+}
+.session-title {
+  font-family: 'Bitter', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+.session-sub {
+  font-size: 12px;
+  color: var(--ink3);
+}
+
+/* KONTEN BERITA */
+.content-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.content-header {
+  background: var(--ink);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content-header-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+.content-header-badge {
+  background: var(--teal);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* INFOGRAFIS */
+.infografis {
+  padding: 20px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdfa 100%);
+  border-bottom: 1px solid var(--border);
+}
+.infografis-source {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.source-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+}
+.infografis-headline {
+  font-family: 'Bitter', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.stat-num {
+  font-family: 'Bitter', serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.stat-num.red { color: var(--red); }
+.stat-num.amber { color: #d97706; }
+.stat-num.teal { color: var(--teal); }
+.stat-label {
+  font-size: 10px;
+  color: var(--ink3);
+  line-height: 1.4;
+  font-weight: 600;
+}
+.chart-row {
+  margin-bottom: 8px;
+}
+.chart-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.chart-label {
+  font-size: 11px;
+  color: var(--ink2);
+  width: 160px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.chart-bar {
+  flex: 1;
+  background: #f1f5f9;
+  border-radius: 4px;
+  height: 10px;
+  overflow: hidden;
+}
+.chart-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1.2s ease;
+}
+.chart-val {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'Bitter', serif;
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.infografis-caption {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.6;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  margin-top: 12px;
+}
+.infografis-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.itag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.itag.green { background: var(--green-light); color: var(--green); }
+.itag.red { background: var(--red-light); color: var(--red); }
+.itag.teal { background: var(--teal-light); color: var(--teal-dark); }
+
+/* PERTANYAAN */
+.question-wrap {
+  padding: 20px;
+}
+.q-item {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.q-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.q-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.q-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.q-num.done { background: var(--green); color: white; }
+.q-num.active { background: var(--teal); color: white; }
+.q-num.locked { background: #e7e5e4; color: var(--ink3); }
+.q-type {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.q-type.done { color: var(--green); }
+.q-type.active { color: var(--teal); }
+.q-type.locked { color: var(--ink3); }
+.q-text {
+  font-family: 'Bitter', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.q-text.muted { color: var(--ink3); font-weight: 400; font-size: 13px; font-style: italic; }
+
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: white;
+}
+.choice:hover:not([data-state]) { border-color: var(--teal); background: var(--teal-light); }
+.choice[data-state="correct"] { border-color: var(--green); background: var(--green-light); }
+.choice[data-state="wrong"] { border-color: var(--red); background: var(--red-light); }
+.choice[data-state="selected"] { border-color: var(--teal); background: var(--teal-light); }
+.choice-bubble {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+.choice[data-state="correct"] .choice-bubble { border-color: var(--green); background: var(--green); color: white; }
+.choice[data-state="wrong"] .choice-bubble { border-color: var(--red); background: var(--red); color: white; }
+.choice[data-state="selected"] .choice-bubble { border-color: var(--teal); background: var(--teal); color: white; }
+.choice-text { font-size: 13px; font-weight: 600; color: var(--ink2); line-height: 1.5; }
+.choice[data-state="correct"] .choice-text { color: var(--green); }
+
+.feedback-box {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  display: none;
+}
+.feedback-box.show { display: block; }
+.feedback-box.correct { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+.feedback-box.wrong { background: var(--red-light); color: var(--red); border: 1px solid #fecaca; }
+
+.answer-wrap { position: relative; }
+.answer-textarea {
+  width: 100%;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  resize: vertical;
+  min-height: 90px;
+  outline: none;
+  transition: border-color 0.15s;
+  background: white;
+}
+.answer-textarea:focus { border-color: var(--teal); }
+.char-count {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink3);
+}
+.hint-box {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--orange-light);
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #92400e;
+  line-height: 1.6;
+}
+.hint-label { font-weight: 800; color: var(--orange); }
+
+.action-bar {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0 0 12px 12px;
+}
+.btn-submit {
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-submit:hover { background: var(--teal-dark); }
+.btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; }
+.btn-submit.green { background: var(--green); }
+.btn-submit.green:hover { background: #15803d; }
+.submit-note { font-size: 12px; color: var(--ink3); font-weight: 600; }
+
+/* SIDEBAR */
+.sidebar {}
+.side-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.side-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.side-body { padding: 14px 16px; }
+
+.xp-bar {
+  background: #f1f5f9;
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--green));
+  border-radius: 6px;
+  transition: width 0.8s ease;
+}
+.xp-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink3);
+}
+.score-big {
+  font-family: 'Bitter', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.score-label { font-size: 11px; color: var(--ink3); font-weight: 700; }
+
+.checklist-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+}
+.checklist-row:last-child { border-bottom: none; }
+.check-bub {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+}
+.check-bub.done { background: var(--green); color: white; }
+.check-bub.active { background: var(--teal); color: white; }
+.check-bub.pending { background: #e7e5e4; color: transparent; }
+.check-label { color: var(--ink2); }
+.check-label.done-text { color: var(--ink3); text-decoration: line-through; font-weight: 600; }
+.check-label.active-text { color: var(--teal-dark); }
+
+.sync-card {
+  background: var(--teal-light);
+  border: 1px solid #99f6e4;
+  border-radius: 10px;
+  padding: 12px;
+}
+.sync-icon { font-size: 18px; margin-bottom: 4px; }
+.sync-title { font-size: 12px; font-weight: 800; color: var(--teal-dark); margin-bottom: 3px; }
+.sync-desc { font-size: 11px; color: #0f766e; line-height: 1.6; font-weight: 600; }
+
+.streak-row { display: flex; gap: 6px; }
+.streak-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+.streak-dot.active { background: var(--teal); color: white; }
+.streak-dot.pending { background: #f1f5f9; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-back">&#8592; Beranda</a>
+    <span class="topbar-title">GELAS DIGITAL: e-LKPD Siswa</span>
+    <span class="topbar-badge">Lapis 1</span>
+  </div>
+  <div class="topbar-user">
+    <div>
+      <div class="user-name">Dinda Putri</div>
+      <div class="user-class">Kelas VIII-A | SMPN 3 Buleleng</div>
+    </div>
+    <div class="user-avatar">DP</div>
+  </div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-inner">
+    <div class="prog-steps">
+      <div class="prog-step">
+        <div class="step-circle done" id="sc1">&#10003;</div>
+        <span class="step-label">Identifikasi klaim</span>
+      </div>
+      <div class="step-sep done" id="sl1"></div>
+      <div class="prog-step">
+        <div class="step-circle done" id="sc2">&#10003;</div>
+        <span class="step-label">Pisahkan opini</span>
+      </div>
+      <div class="step-sep done" id="sl2"></div>
+      <div class="prog-step">
+        <div class="step-circle active" id="sc3">3</div>
+        <span class="step-label active">Verifikasi sumber</span>
+      </div>
+      <div class="step-sep" id="sl3"></div>
+      <div class="prog-step">
+        <div class="step-circle pending" id="sc4">4</div>
+        <span class="step-label">Evaluasi bias</span>
+      </div>
+      <div class="step-sep" id="sl4"></div>
+      <div class="prog-step">
+        <div class="step-circle pending" id="sc5">5</div>
+        <span class="step-label">Refleksi kritis</span>
+      </div>
+    </div>
+    <span class="prog-pct" id="prog-pct">60% selesai</span>
+  </div>
+</div>
+
+<div class="main-layout">
+  <div>
+    <div class="session-header">
+      <div class="session-icon">&#128240;</div>
+      <div class="session-meta">
+        <div class="session-tag">Scaffolding Literasi Digital | Media-Based Critical Reading</div>
+        <div class="session-title">Membaca Kritis Infografis: Fakta atau Opini?</div>
+        <div class="session-sub">Analisis infografis berikut, lalu jawab pertanyaan secara berurutan</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="content-header">
+        <span class="content-header-title">Materi bacaan: Infografis berita</span>
+        <span class="content-header-badge">Dikurasi untuk Kelas VIII</span>
+      </div>
+
+      <div class="infografis">
+        <div class="infografis-source">
+          <div class="source-dot"></div>
+          Kemendikbudristek, 2023 | Dikurasi oleh guru | Sesuai usia Kelas VIII
+        </div>
+        <h2 class="infografis-headline">Darurat Literasi: 41% Siswa SMP Indonesia Belum Mencapai Kemampuan Membaca Minimum</h2>
+
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="stat-num red">41%</div>
+            <div class="stat-label">Siswa SMP di bawah kompetensi minimum literasi</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num amber">359</div>
+            <div class="stat-label">Skor PISA 2022 Indonesia (rata-rata OECD: 476)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num teal">99%</div>
+            <div class="stat-label">Remaja 13-18 tahun sudah terhubung internet</div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-item">
+            <span class="chart-label">Skor PISA Indonesia</span>
+            <div class="chart-bar"><div class="chart-fill" id="cf1" style="width:0%;background:#dc2626"></div></div>
+            <span class="chart-val" style="color:#dc2626">359</span>
+          </div>
+          <div class="chart-item">
+            <span class="chart-label">Rata-rata OECD</span>
+            <div class="chart-bar"><div class="chart-fill" id="cf2" style="width:0%;background:#0d9488"></div></div>
+            <span class="chart-val" style="color:#0d9488">476</span>
+          </div>
+        </div>
+
+        <p class="infografis-caption">Infografis ini menggambarkan kondisi literasi siswa Indonesia berdasarkan data Rapor Pendidikan 2023 dan PISA 2022. Indonesia berada di peringkat ke-69 dari 80 negara dalam penilaian kemampuan membaca internasional.</p>
+        <div class="infografis-tags">
+          <span class="itag teal">Data Kemendikbud</span>
+          <span class="itag red">PISA 2022</span>
+          <span class="itag green">Literasi Nasional</span>
+        </div>
+      </div>
+
+      <div class="question-wrap" id="q-wrap">
+
+        <!-- Q1 selesai -->
+        <div class="q-item">
+          <div class="q-label">
+            <div class="q-num done">&#10003;</div>
+            <span class="q-type done">Pertanyaan 1 (selesai): Identifikasi klaim</span>
+          </div>
+          <div class="q-text muted">Manakah pernyataan yang merupakan FAKTA berdasarkan data dalam infografis?</div>
+          <div class="choices" style="pointer-events:none">
+            <div class="choice" data-state="correct">
+              <div class="choice-bubble">&#10003;</div>
+              <div class="choice-text">Skor PISA 2022 Indonesia adalah 359, di bawah rata-rata OECD sebesar 476</div>
+            </div>
+          </div>
+          <div class="feedback-box correct show">Benar! Angka 359 dan 476 adalah data terukur dari laporan PISA 2022, bukan pendapat seseorang.</div>
+        </div>
+
+        <!-- Q2 selesai -->
+        <div class="q-item">
+          <div class="q-label">
+            <div class="q-num done">&#10003;</div>
+            <span class="q-type done">Pertanyaan 2 (selesai): Pisahkan opini</span>
+          </div>
+          <div class="q-text muted">Kalimat mana yang merupakan OPINI dalam infografis ini?</div>
+          <div class="choices" style="pointer-events:none">
+            <div class="choice" data-state="correct">
+              <div class="choice-bubble">&#10003;</div>
+              <div class="choice-text">"Indonesia mengalami darurat literasi yang sangat parah" karena kata "sangat parah" adalah penilaian subjektif</div>
+            </div>
+          </div>
+          <div class="feedback-box correct show">Tepat! Kata "sangat parah" adalah penilaian subjektif yang tidak bisa diukur dengan angka. Itu opini, bukan fakta.</div>
+        </div>
+
+        <!-- Q3 aktif -->
+        <div class="q-item" id="q3-block">
+          <div class="q-label">
+            <div class="q-num active">3</div>
+            <span class="q-type active">Pertanyaan 3 (dikerjakan): Verifikasi sumber</span>
+          </div>
+          <div class="q-text">Berdasarkan infografis ini, dari mana data angka 41% berasal? Apakah sumber tersebut dapat dipercaya? Jelaskan alasanmu!</div>
+          <div class="choices" id="q3-choices">
+            <div class="choice" onclick="answerChoice(this,'wrong','q3')">
+              <div class="choice-bubble"></div>
+              <div class="choice-text">Dari media sosial yang dibagikan teman, jadi tidak bisa dipercaya</div>
+            </div>
+            <div class="choice" onclick="answerChoice(this,'correct','q3')" data-correct="true">
+              <div class="choice-bubble"></div>
+              <div class="choice-text">Dari Rapor Pendidikan 2023 milik Kemendikbudristek, sumber resmi pemerintah yang bisa dipercaya</div>
+            </div>
+            <div class="choice" onclick="answerChoice(this,'wrong','q3')">
+              <div class="choice-bubble"></div>
+              <div class="choice-text">Dari blog pribadi seseorang di internet yang tidak diketahui identitasnya</div>
+            </div>
+            <div class="choice" onclick="answerChoice(this,'wrong','q3')">
+              <div class="choice-bubble"></div>
+              <div class="choice-text">Tidak ada sumber yang disebutkan, jadi tidak bisa dipercaya</div>
+            </div>
+          </div>
+          <div class="feedback-box" id="fb3"></div>
+        </div>
+
+        <!-- Q4 terkunci -->
+        <div class="q-item" id="q4-block" style="opacity:0.45">
+          <div class="q-label">
+            <div class="q-num locked">4</div>
+            <span class="q-type locked">Pertanyaan 4 (terkunci): Evaluasi bias</span>
+          </div>
+          <div class="q-text muted">Apakah infografis ini menampilkan informasi secara berimbang? Informasi apa yang mungkin tidak ditampilkan?</div>
+        </div>
+
+        <!-- Q5 terkunci -->
+        <div class="q-item" id="q5-block" style="opacity:0.45">
+          <div class="q-label">
+            <div class="q-num locked">5</div>
+            <span class="q-type locked">Pertanyaan 5 (terkunci): Refleksi kritis</span>
+          </div>
+          <div class="q-text muted">Setelah membaca infografis ini, apa yang ingin kamu lakukan untuk meningkatkan literasimu sendiri?</div>
+        </div>
+
+      </div>
+
+      <div class="action-bar">
+        <span class="submit-note" id="submit-note">Pilih jawaban untuk melanjutkan</span>
+        <button class="btn-submit" id="btn-next" disabled>Lanjut ke Pertanyaan 4 &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="side-card">
+      <div class="side-header">Poin sesi ini</div>
+      <div class="side-body">
+        <div class="score-big" id="score">60</div>
+        <div class="score-label">dari 100 poin</div>
+        <div style="margin-top:12px">
+          <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:60%"></div></div>
+          <div class="xp-row"><span>XP sesi ini</span><span id="xp-txt">60/100</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Checklist berpikir kritis</div>
+      <div class="side-body">
+        <div class="checklist-row">
+          <div class="check-bub done">&#10003;</div>
+          <span class="check-label done-text">Identifikasi klaim utama</span>
+        </div>
+        <div class="checklist-row">
+          <div class="check-bub done">&#10003;</div>
+          <span class="check-label done-text">Pisahkan fakta dari opini</span>
+        </div>
+        <div class="checklist-row" id="cl3">
+          <div class="check-bub active">3</div>
+          <span class="check-label active-text">Verifikasi kredibilitas sumber</span>
+        </div>
+        <div class="checklist-row" id="cl4">
+          <div class="check-bub pending"></div>
+          <span class="check-label">Evaluasi potensi bias</span>
+        </div>
+        <div class="checklist-row" id="cl5">
+          <div class="check-bub pending"></div>
+          <span class="check-label">Refleksi dan simpulan pribadi</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Streak harian</div>
+      <div class="side-body">
+        <div class="streak-row">
+          <div class="streak-dot active">S</div>
+          <div class="streak-dot active">S</div>
+          <div class="streak-dot active">R</div>
+          <div class="streak-dot active">K</div>
+          <div class="streak-dot active" style="background:var(--orange);color:white">J</div>
+          <div class="streak-dot pending">S</div>
+          <div class="streak-dot pending">M</div>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);font-weight:700;margin-top:8px">5 hari berturut-turut belajar!</div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Sinkronisasi otomatis</div>
+      <div class="side-body">
+        <div class="sync-card">
+          <div class="sync-icon">&#128257;</div>
+          <div class="sync-title">Terhubung ke Dashboard Lapis 3</div>
+          <div class="sync-desc">Progres kamu dikirim otomatis ke Dashboard Spasial setelah sesi selesai, tanpa perlu input manual guru.</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById('cf1').style.width = '75%';
+    document.getElementById('cf2').style.width = '100%';
+  }, 500);
+};
+
+let q3done = false;
+
+function answerChoice(el, state, qid) {
+  if (q3done) return;
+  const choices = el.closest('.choices').querySelectorAll('.choice');
+  choices.forEach(c => {
+    delete c.dataset.state;
+    c.querySelector('.choice-bubble').textContent = '';
+    c.style.pointerEvents = 'none';
+  });
+  el.dataset.state = state;
+  el.querySelector('.choice-bubble').textContent = state === 'correct' ? '&#10003;' : '&#215;';
+  el.querySelector('.choice-bubble').innerHTML = state === 'correct' ? '&#10003;' : '&#215;';
+
+  const fb = document.getElementById('fb3');
+  fb.classList.add('show');
+  if (state === 'correct') {
+    fb.className = 'feedback-box correct show';
+    fb.textContent = 'Tepat sekali! Rapor Pendidikan adalah laporan resmi Kemendikbudristek yang didasarkan pada Asesmen Nasional. Sumber resmi pemerintah termasuk sumber yang dapat dipercaya untuk data pendidikan.';
+    q3done = true;
+    document.getElementById('sc3').className = 'step-circle done';
+    document.getElementById('sc3').innerHTML = '&#10003;';
+    document.getElementById('sl3').className = 'step-sep done';
+    document.getElementById('sc4').className = 'step-circle active';
+    document.getElementById('cl3').querySelector('.check-bub').className = 'check-bub done';
+    document.getElementById('cl3').querySelector('.check-bub').innerHTML = '&#10003;';
+    document.getElementById('cl3').querySelector('.check-label').className = 'check-label done-text';
+    document.getElementById('cl4').querySelector('.check-bub').className = 'check-bub active';
+    document.getElementById('cl4').querySelector('.check-label').className = 'check-label active-text';
+    document.getElementById('q4-block').style.opacity = '1';
+    document.getElementById('q5-block').style.opacity = '0.45';
+    document.getElementById('score').textContent = '80';
+    document.getElementById('xp-fill').style.width = '80%';
+    document.getElementById('xp-txt').textContent = '80/100';
+    document.getElementById('prog-pct').textContent = '80% selesai';
+    const btn = document.getElementById('btn-next');
+    btn.disabled = false;
+    btn.textContent = 'Lanjut ke Pertanyaan 4 \u2192';
+    document.getElementById('submit-note').textContent = 'Jawaban benar! Lanjutkan.';
+
+    document.getElementById('q4-block').innerHTML = `
+      <div class="q-label">
+        <div class="q-num active">4</div>
+        <span class="q-type active">Pertanyaan 4 (aktif): Evaluasi bias</span>
+      </div>
+      <div class="q-text">Menurut kamu, apakah infografis ini menampilkan informasi secara berimbang?</div>
+      <div class="choices" id="q4-choices">
+        <div class="choice" onclick="answerQ4(this,'wrong')">
+          <div class="choice-bubble"></div>
+          <div class="choice-text">Ya, sepenuhnya berimbang karena ada data angka yang lengkap</div>
+        </div>
+        <div class="choice" onclick="answerQ4(this,'correct')" data-correct="true">
+          <div class="choice-bubble"></div>
+          <div class="choice-text">Tidak sepenuhnya berimbang karena hanya menampilkan data negatif tanpa menyebut upaya yang sudah dilakukan</div>
+        </div>
+        <div class="choice" onclick="answerQ4(this,'wrong')">
+          <div class="choice-bubble"></div>
+          <div class="choice-text">Tidak bisa dinilai karena infografis tidak perlu berimbang</div>
+        </div>
+      </div>
+      <div class="feedback-box" id="fb4"></div>`;
+  } else {
+    fb.className = 'feedback-box wrong show';
+    fb.textContent = 'Coba lagi! Perhatikan: infografis mencantumkan sumber "Kemendikbudristek, 2023". Itu lembaga resmi pemerintah, bukan media sosial atau blog pribadi.';
+    setTimeout(() => {
+      choices.forEach(c => { c.style.pointerEvents = 'auto'; });
+      delete el.dataset.state;
+      el.querySelector('.choice-bubble').textContent = '';
+      fb.classList.remove('show');
+    }, 2000);
+  }
+}
+
+function answerQ4(el, state) {
+  const choices = el.closest('.choices').querySelectorAll('.choice');
+  choices.forEach(c => { c.style.pointerEvents = 'none'; delete c.dataset.state; c.querySelector('.choice-bubble').innerHTML = ''; });
+  el.dataset.state = state;
+  el.querySelector('.choice-bubble').innerHTML = state === 'correct' ? '&#10003;' : '&#215;';
+  const fb = document.getElementById('fb4');
+  fb.classList.add('show');
+  if (state === 'correct') {
+    fb.className = 'feedback-box correct show';
+    fb.textContent = 'Analisis yang baik! Infografis ini fokus pada masalah tetapi tidak menyebut program GLS atau upaya pemerintah. Ini adalah contoh bias selektif dalam penyajian informasi.';
+    document.getElementById('sc4').className = 'step-circle done';
+    document.getElementById('sc4').innerHTML = '&#10003;';
+    document.getElementById('sl4').className = 'step-sep done';
+    document.getElementById('sc5').className = 'step-circle active';
+    document.getElementById('cl4').querySelector('.check-bub').className = 'check-bub done';
+    document.getElementById('cl4').querySelector('.check-bub').innerHTML = '&#10003;';
+    document.getElementById('cl4').querySelector('.check-label').className = 'check-label done-text';
+    document.getElementById('cl5').querySelector('.check-bub').className = 'check-bub active';
+    document.getElementById('cl5').querySelector('.check-label').className = 'check-label active-text';
+    document.getElementById('q5-block').style.opacity = '1';
+    document.getElementById('score').textContent = '90';
+    document.getElementById('xp-fill').style.width = '90%';
+    document.getElementById('xp-txt').textContent = '90/100';
+    document.getElementById('prog-pct').textContent = '90% selesai';
+    document.getElementById('btn-next').textContent = 'Selesaikan sesi \u2192';
+    document.getElementById('btn-next').className = 'btn-submit green';
+    document.getElementById('btn-next').onclick = finishSession;
+    document.getElementById('q5-block').innerHTML = `
+      <div class="q-label">
+        <div class="q-num active">5</div>
+        <span class="q-type active">Pertanyaan 5 (terakhir): Refleksi kritis</span>
+      </div>
+      <div class="q-text">Setelah membaca infografis ini, apa satu hal yang ingin kamu lakukan untuk meningkatkan kemampuan literasimu sendiri?</div>
+      <div class="answer-wrap">
+        <textarea class="answer-textarea" id="ans5" placeholder="Tulis refleksimu di sini... minimal 2 kalimat ya!" oninput="countChars()"></textarea>
+        <span class="char-count" id="char-count">0 karakter</span>
+      </div>
+      <div class="hint-box"><span class="hint-label">Panduan:</span> Pikirkan kebiasaan membaca yang bisa kamu ubah, konten apa yang ingin kamu konsumsi lebih kritis, atau sumber informasi mana yang ingin kamu cek lebih teliti.</div>`;
+  } else {
+    fb.className = 'feedback-box wrong show';
+    fb.textContent = 'Perhatikan lagi! Data angka saja tidak menjamin keseimbangan informasi. Informasi bisa bias jika hanya menampilkan satu sisi cerita.';
+    setTimeout(() => {
+      choices.forEach(c => { c.style.pointerEvents = 'auto'; delete c.dataset.state; c.querySelector('.choice-bubble').innerHTML = ''; });
+      fb.classList.remove('show');
+    }, 2200);
+  }
+}
+
+function countChars() {
+  const v = document.getElementById('ans5').value;
+  document.getElementById('char-count').textContent = v.length + ' karakter';
+}
+
+function finishSession() {
+  const ans5 = document.getElementById('ans5');
+  if (!ans5 || ans5.value.trim().length < 20) {
+    ans5.style.borderColor = '#dc2626';
+    ans5.placeholder = 'Tulis minimal 20 karakter ya!';
+    return;
+  }
+  document.getElementById('sc5').className = 'step-circle done';
+  document.getElementById('sc5').innerHTML = '&#10003;';
+  document.getElementById('cl5').querySelector('.check-bub').className = 'check-bub done';
+  document.getElementById('cl5').querySelector('.check-bub').innerHTML = '&#10003;';
+  document.getElementById('cl5').querySelector('.check-label').className = 'check-label done-text';
+  document.getElementById('score').textContent = '100';
+  document.getElementById('xp-fill').style.width = '100%';
+  document.getElementById('xp-txt').textContent = '100/100';
+  document.getElementById('prog-pct').textContent = '100% selesai';
+  document.getElementById('btn-next').textContent = 'Sesi selesai! Data terkirim ke dashboard.';
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('submit-note').textContent = 'Selamat! Progres dikirim otomatis ke Lapis 3.';
+  document.getElementById('btn-next').onclick = () => { window.location.href = 'lapis3-dashboard.html'; };
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('btn-next').textContent = 'Lihat Dashboard Spasial \u2192';
+}
+</script>
+</body>
+</html>

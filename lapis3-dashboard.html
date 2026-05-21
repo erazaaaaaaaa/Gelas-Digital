@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Spasial | GELAS DIGITAL Lapis 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bitter:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#dc2626;--red2:#fee2e2;--red3:#fca5a5;
+  --amber:#d97706;--amber2:#fef3e2;--amber3:#fcd34d;
+  --green:#16a34a;--green2:#dcfce7;--green3:#86efac;
+  --blue:#1d4ed8;--blue2:#eff6ff;--blue3:#bfdbfe;--blue4:#1e40af;
+  --teal:#0d9488;--teal2:#ccfbf1;
+  --ink:#0f172a;--ink2:#334155;--ink3:#64748b;
+  --bg:#f1f5f9;--white:#fff;--border:#e2e8f0;
+  --dark:#020617;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:white;}
+
+.topbar{background:#0f172a;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.topbar-back{color:rgba(255,255,255,0.6);font-size:13px;font-weight:700;text-decoration:none;}
+.topbar-back:hover{color:white;}
+.topbar-title{font-size:14px;font-weight:900;color:white;}
+.topbar-badge{background:rgba(13,148,136,0.3);color:#2dd4bf;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(13,148,136,0.3);}
+.topbar-right{display:flex;align-items:center;gap:12px;font-size:12px;color:rgba(255,255,255,0.5);}
+.live-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.2);}}
+
+.filter-bar{background:#0f172a;border-bottom:1px solid rgba(255,255,255,0.06);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.filter-label{font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.5px;}
+.filter-select{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:white;cursor:pointer;outline:none;}
+.filter-select:hover{border-color:rgba(255,255,255,0.25);}
+.filter-tag{background:var(--teal);color:white;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;}
+.filter-tag.red-tag{background:var(--red);}
+
+.body{max-width:1200px;margin:0 auto;padding:20px 24px;}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.mc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;border-top:2px solid rgba(255,255,255,0.08);}
+.mc.mc-red{border-top-color:var(--red);}
+.mc.mc-green{border-top-color:var(--teal);}
+.mc.mc-amber{border-top-color:var(--amber);}
+.mc-label{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;}
+.mc-val{font-family:'Bitter',serif;font-size:32px;font-weight:700;line-height:1;margin-bottom:3px;}
+.mc-val.red{color:#f87171;}
+.mc-val.green{color:#34d399;}
+.mc-val.amber{color:#fbbf24;}
+.mc-note{font-size:11px;color:rgba(255,255,255,0.35);font-weight:600;}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:1fr 380px;gap:16px;margin-bottom:16px;}
+
+/* PETA */
+.peta-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;}
+.card-header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.card-sub{font-size:11px;color:var(--teal);font-weight:700;}
+.peta-body{padding:16px;}
+
+.map-container{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);margin-bottom:12px;}
+.map-header-sim{background:#1a2744;padding:8px 12px;display:flex;align-items:center;gap:6px;}
+.map-dot{width:9px;height:9px;border-radius:50%;}
+.map-url{font-size:11px;color:rgba(255,255,255,0.4);flex:1;font-family:'Bitter',serif;}
+.map-inner{height:240px;background:linear-gradient(180deg,#0e2a4a 0%,#1a3a5c 40%,#243d5e 100%);position:relative;overflow:hidden;}
+.map-grid-overlay{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(255,255,255,0.03) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(255,255,255,0.03) 20px);}
+.map-pulau{position:absolute;}
+.map-zone{position:absolute;border-radius:50%;opacity:0.7;cursor:pointer;transition:opacity 0.2s,transform 0.2s;}
+.map-zone:hover{opacity:1;transform:scale(1.1);}
+.map-label{position:absolute;font-size:9px;font-weight:700;color:rgba(255,255,255,0.8);pointer-events:none;}
+.map-tooltip{position:absolute;background:rgba(2,6,23,0.95);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:8px 12px;font-size:11px;font-weight:700;color:white;pointer-events:none;z-index:10;display:none;min-width:160px;}
+.map-tooltip .tt-name{font-size:12px;font-weight:800;margin-bottom:4px;}
+.map-tooltip .tt-row{display:flex;justify-content:space-between;gap:12px;color:rgba(255,255,255,0.7);margin-top:2px;}
+
+.bars-section{margin-top:4px;}
+.bar-row-d{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.bar-label-d{font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);width:70px;flex-shrink:0;}
+.bar-track-d{flex:1;background:rgba(255,255,255,0.08);border-radius:3px;height:8px;overflow:hidden;}
+.bar-fill-d{height:100%;border-radius:3px;transition:width 1.2s ease;}
+.bar-pct-d{font-size:11px;font-weight:800;width:32px;text-align:right;font-family:'Bitter',serif;}
+
+.legend-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);}
+.leg-dot{width:8px;height:8px;border-radius:50%;}
+
+/* PRIORITAS */
+.priority-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;}
+.priority-item{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:background 0.15s;}
+.priority-item:last-child{border-bottom:none;}
+.priority-item:hover{background:rgba(255,255,255,0.04);}
+.priority-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.priority-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+.priority-num.red{background:rgba(220,38,38,0.25);color:#f87171;}
+.priority-num.amber{background:rgba(217,119,6,0.25);color:#fbbf24;}
+.priority-num.green{background:rgba(22,163,74,0.25);color:#4ade80;}
+.priority-name{font-size:13px;font-weight:700;flex:1;color:white;}
+.badge-sm{padding:2px 7px;border-radius:20px;font-size:9px;font-weight:800;flex-shrink:0;}
+.badge-sm.red{background:rgba(220,38,38,0.2);color:#f87171;border:1px solid rgba(220,38,38,0.3);}
+.badge-sm.amber{background:rgba(217,119,6,0.2);color:#fbbf24;border:1px solid rgba(217,119,6,0.3);}
+.badge-sm.green{background:rgba(22,163,74,0.2);color:#4ade80;border:1px solid rgba(22,163,74,0.3);}
+.priority-meta{display:flex;gap:10px;padding-left:28px;}
+.pm-item{font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:3px;}
+.algo-note{margin:10px 16px;background:rgba(29,78,216,0.15);border:1px solid rgba(29,78,216,0.25);border-radius:6px;padding:10px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);line-height:1.7;}
+.algo-note strong{color:rgba(147,197,253,0.9);}
+
+/* MODE GRID */
+.mode-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.mode-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;}
+.mode-tag{font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;color:rgba(255,255,255,0.4);}
+.mode-name{font-family:'Bitter',serif;font-size:16px;font-weight:700;color:white;margin-bottom:8px;}
+.mode-val{font-family:'Bitter',serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;}
+.mode-bar{background:rgba(255,255,255,0.1);border-radius:3px;height:5px;overflow:hidden;margin-bottom:5px;}
+.mode-fill{height:100%;border-radius:3px;transition:width 1.4s ease;}
+.mode-note{font-size:10px;color:rgba(255,255,255,0.35);font-weight:700;}
+
+/* ALUR */
+.alur-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;margin-bottom:16px;}
+.alur-title{font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:12px;}
+.alur-nodes{display:flex;align-items:stretch;gap:0;}
+.alur-node-d{flex:1;padding:12px 10px;background:rgba(255,255,255,0.04);border-radius:6px;text-align:center;border:1px solid rgba(255,255,255,0.08);position:relative;}
+.alur-node-d.active{background:rgba(13,148,136,0.15);border-color:rgba(13,148,136,0.4);}
+.alur-arr-d{display:flex;align-items:center;padding:0 6px;color:rgba(255,255,255,0.2);font-size:14px;flex-shrink:0;}
+.an-icon{font-size:18px;margin-bottom:4px;}
+.an-title{font-size:11px;font-weight:800;color:white;margin-bottom:2px;}
+.an-sub{font-size:10px;color:rgba(255,255,255,0.4);font-weight:600;}
+.alur-note-d{font-size:11px;color:rgba(255,255,255,0.3);font-weight:600;margin-top:10px;font-style:italic;}
+
+footer{background:#020617;border-top:1px solid rgba(255,255,255,0.05);padding:20px 24px;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-logo{font-family:'Bitter',serif;font-size:15px;font-weight:700;color:white;}
+.footer-logo span{color:#2dd4bf;}
+.footer-links{display:flex;gap:20px;list-style:none;}
+.footer-links a{font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;}
+.footer-links a:hover{color:white;}
+.footer-meta{font-size:11px;color:rgba(255,255,255,0.25);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-back">&#8592; Beranda</a>
+    <span class="topbar-title">GELAS DIGITAL: Dashboard Monitoring Spasial</span>
+    <span class="topbar-badge">Lapis 3</span>
+  </div>
+  <div class="topbar-right">
+    <div class="live-dot"></div>
+    <span>Live | Sumber: API Rapor Pendidikan AN + Dapodik</span>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <select class="filter-select" id="f-zona" onchange="applyFilter()">
+    <option value="all">Semua wilayah</option>
+    <option value="kota">Kota</option>
+    <option value="pinggiran">Pinggiran</option>
+    <option value="3t">3T</option>
+  </select>
+  <select class="filter-select" id="f-sem">
+    <option>Semester 1, 2026</option>
+    <option>Semester 2, 2025</option>
+  </select>
+  <select class="filter-select" id="f-prov" onchange="applyFilter()">
+    <option value="all">Semua provinsi</option>
+    <option value="jabar">Jawa Barat</option>
+    <option value="bali">Bali</option>
+    <option value="papua">Papua</option>
+    <option value="ntb">NTB</option>
+    <option value="sumut">Sumatera Utara</option>
+  </select>
+  <span class="filter-tag">Fase 1 aktif</span>
+  <span class="filter-tag red-tag" id="alert-tag">8 zona kritis perlu intervensi</span>
+</div>
+
+<div class="body">
+  <div class="metrics">
+    <div class="mc">
+      <div class="mc-label">Sekolah terpantau</div>
+      <div class="mc-val" id="mv1">30</div>
+      <div class="mc-note" id="mn1">3 kategori wilayah</div>
+    </div>
+    <div class="mc mc-red">
+      <div class="mc-label">Zona merah (blank spot)</div>
+      <div class="mc-val red" id="mv2">8</div>
+      <div class="mc-note" id="mn2">Prioritas intervensi segera</div>
+    </div>
+    <div class="mc mc-green">
+      <div class="mc-label">Guru aktif modul PMM+</div>
+      <div class="mc-val green" id="mv3">142</div>
+      <div class="mc-note" id="mn3">52 kota, 56 pinggiran, 34 3T</div>
+    </div>
+    <div class="mc mc-amber">
+      <div class="mc-label">Rerata AKM nasional</div>
+      <div class="mc-val amber" id="mv4">59%</div>
+      <div class="mc-note" id="mn4">Rata-rata tertimbang 30 sekolah</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="peta-card">
+      <div class="card-header">
+        <span class="card-title">Sebaran indeks literasi per zona wilayah</span>
+        <span class="card-sub">Choropleth | Dapodik + Rapor Pendidikan AN</span>
+      </div>
+      <div class="peta-body">
+        <div class="map-container">
+          <div class="map-header-sim">
+            <div class="map-dot" style="background:#ff5f57"></div>
+            <div class="map-dot" style="background:#febc2e"></div>
+            <div class="map-dot" style="background:#28c840"></div>
+            <span class="map-url">GELAS DIGITAL | Peta Sebaran Indeks Literasi Sekolah Pilot Indonesia</span>
+          </div>
+          <div class="map-inner" id="map-inner">
+            <div class="map-grid-overlay"></div>
+
+            <!-- Pulau Sumatera -->
+            <div style="position:absolute;left:3%;top:25%;width:13%;height:55%;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(251,191,36,0.8);">Sumatera</div>
+
+            <!-- Pulau Jawa -->
+            <div style="position:absolute;left:28%;top:62%;width:18%;height:20%;background:rgba(22,163,74,0.2);border:1px solid rgba(74,222,128,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(74,222,128,0.9);">Jawa</div>
+
+            <!-- Kalimantan -->
+            <div style="position:absolute;left:32%;top:20%;width:17%;height:45%;background:rgba(217,119,6,0.12);border:1px solid rgba(217,119,6,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(251,191,36,0.7);">Kalimantan</div>
+
+            <!-- Sulawesi -->
+            <div style="position:absolute;left:52%;top:18%;width:8%;height:52%;background:rgba(217,119,6,0.12);border:1px solid rgba(217,119,6,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(251,191,36,0.7);">Sulawesi</div>
+
+            <!-- Maluku -->
+            <div style="position:absolute;left:64%;top:30%;width:5%;height:35%;background:rgba(220,38,38,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:rgba(248,113,113,0.8);">Maluku</div>
+
+            <!-- Papua -->
+            <div style="position:absolute;left:72%;top:18%;width:24%;height:60%;background:rgba(220,38,38,0.18);border:1px solid rgba(248,113,113,0.35);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(248,113,113,0.9);">Papua</div>
+
+            <!-- Bali/NTT -->
+            <div style="position:absolute;left:48%;top:68%;width:10%;height:18%;background:rgba(220,38,38,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:rgba(248,113,113,0.8);">Bali/NTT</div>
+
+            <!-- Titik pilot: Bandung -->
+            <div class="map-zone" style="left:34%;top:68%;width:14px;height:14px;background:#1d4ed8;border-radius:50%;border:2px solid white;"
+                 onmouseenter="showTip(event,'Kota Bandung','79%','76%','Di pusat')"
+                 onmouseleave="hideTip()"></div>
+            <div class="map-label" style="left:33%;top:79%;">Bandung</div>
+
+            <!-- Titik pilot: Buleleng -->
+            <div class="map-zone" style="left:49%;top:70%;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid white;"
+                 onmouseenter="showTip(event,'Kab. Buleleng','44%','31%','95 km')"
+                 onmouseleave="hideTip()"></div>
+            <div class="map-label" style="left:48%;top:80%;">Buleleng</div>
+
+            <!-- Titik pilot: Peg Bintang -->
+            <div class="map-zone" style="left:83%;top:38%;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid white;"
+                 onmouseenter="showTip(event,'Peg. Bintang','28%','12%','480 km')"
+                 onmouseleave="hideTip()"></div>
+            <div class="map-label" style="left:82%;top:28%;">Peg. Bintang</div>
+
+            <div class="map-tooltip" id="tooltip">
+              <div class="tt-name" id="tt-name"></div>
+              <div class="tt-row"><span>AKM:</span><span id="tt-akm"></span></div>
+              <div class="tt-row"><span>Guru aktif:</span><span id="tt-guru"></span></div>
+              <div class="tt-row"><span>Jarak:</span><span id="tt-jarak"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bars-section">
+          <div class="bar-row-d">
+            <span class="bar-label-d">Kota</span>
+            <div class="bar-track-d"><div class="bar-fill-d" id="bd1" style="width:0%;background:#4ade80"></div></div>
+            <span class="bar-pct-d" style="color:#4ade80">78%</span>
+          </div>
+          <div class="bar-row-d">
+            <span class="bar-label-d">Pinggiran</span>
+            <div class="bar-track-d"><div class="bar-fill-d" id="bd2" style="width:0%;background:#fbbf24"></div></div>
+            <span class="bar-pct-d" style="color:#fbbf24">61%</span>
+          </div>
+          <div class="bar-row-d">
+            <span class="bar-label-d">3T</span>
+            <div class="bar-track-d"><div class="bar-fill-d" id="bd3" style="width:0%;background:#f87171"></div></div>
+            <span class="bar-pct-d" style="color:#f87171">38%</span>
+          </div>
+        </div>
+        <div class="legend-row">
+          <div class="leg-item"><div class="leg-dot" style="background:#f87171"></div>Merah: blank spot (AKM kurang 40%)</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#fbbf24"></div>Kuning: perlu penguatan</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#4ade80"></div>Hijau: on track</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priority-card">
+      <div class="card-header">
+        <span class="card-title">Rekomendasi intervensi prioritas</span>
+      </div>
+      <div id="priority-list">
+        <div class="priority-item" data-zona="3t" onclick="highlightPriority(this)">
+          <div class="priority-top">
+            <div class="priority-num red">1</div>
+            <div class="priority-name">Kab. Pegunungan Bintang</div>
+            <span class="badge-sm red">Kritis</span>
+          </div>
+          <div class="priority-meta">
+            <span class="pm-item">&#9660; AKM 28%</span>
+            <span class="pm-item">&#128100; Guru 12%</span>
+            <span class="pm-item">&#128205; 480 km</span>
+          </div>
+        </div>
+        <div class="priority-item" data-zona="3t" onclick="highlightPriority(this)">
+          <div class="priority-top">
+            <div class="priority-num red">2</div>
+            <div class="priority-name">Kab. Nias Selatan</div>
+            <span class="badge-sm red">Kritis</span>
+          </div>
+          <div class="priority-meta">
+            <span class="pm-item">&#9660; AKM 31%</span>
+            <span class="pm-item">&#128100; Guru 18%</span>
+            <span class="pm-item">&#128205; 310 km</span>
+          </div>
+        </div>
+        <div class="priority-item" data-zona="pinggiran" onclick="highlightPriority(this)">
+          <div class="priority-top">
+            <div class="priority-num amber">3</div>
+            <div class="priority-name">Kab. Buleleng</div>
+            <span class="badge-sm amber">Perhatian</span>
+          </div>
+          <div class="priority-meta">
+            <span class="pm-item">&#9660; AKM 44%</span>
+            <span class="pm-item">&#128100; Guru 31%</span>
+            <span class="pm-item">&#128205; 95 km</span>
+          </div>
+        </div>
+        <div class="priority-item" data-zona="pinggiran" onclick="highlightPriority(this)">
+          <div class="priority-top">
+            <div class="priority-num amber">4</div>
+            <div class="priority-name">Kab. Bangkalan</div>
+            <span class="badge-sm amber">Perhatian</span>
+          </div>
+          <div class="priority-meta">
+            <span class="pm-item">&#9660; AKM 51%</span>
+            <span class="pm-item">&#128100; Guru 42%</span>
+            <span class="pm-item">&#128205; 78 km</span>
+          </div>
+        </div>
+        <div class="priority-item" data-zona="kota" onclick="highlightPriority(this)">
+          <div class="priority-top">
+            <div class="priority-num green">5</div>
+            <div class="priority-name">Kota Bandung (Pilot)</div>
+            <span class="badge-sm green">On track</span>
+          </div>
+          <div class="priority-meta">
+            <span class="pm-item">&#9650; AKM 79%</span>
+            <span class="pm-item">&#128100; Guru 76%</span>
+            <span class="pm-item">&#128205; Pusat</span>
+          </div>
+        </div>
+      </div>
+      <div class="algo-note">
+        <strong>Algoritma prioritas (3 variabel):</strong> Skor AKM Rapor Pendidikan AN di bawah 59% + persentase guru aktif di bawah 40% + jarak ke pusat pelatihan lebih dari 100 km. Data diperbarui setiap akhir semester dari API Rapor Pendidikan dan Dapodik.
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-row">
+    <div class="mode-card">
+      <div class="mode-tag">Mode penuh (kota)</div>
+      <div class="mode-name">Online Real-time</div>
+      <div class="mode-val" style="color:#4ade80">76%</div>
+      <div class="mode-bar"><div class="mode-fill" id="mf1" style="width:0%;background:#4ade80"></div></div>
+      <div class="mode-note">52 guru aktif dari 68 target</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-tag">Mode luring (pinggiran)</div>
+      <div class="mode-name">Unduh Berkala</div>
+      <div class="mode-val" style="color:#fbbf24">52%</div>
+      <div class="mode-bar"><div class="mode-fill" id="mf2" style="width:0%;background:#fbbf24"></div></div>
+      <div class="mode-note">56 guru aktif dari 108 target</div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-tag">Mode minimum (3T)</div>
+      <div class="mode-name">Tatap Muka</div>
+      <div class="mode-val" style="color:#f87171">31%</div>
+      <div class="mode-bar"><div class="mode-fill" id="mf3" style="width:0%;background:#f87171"></div></div>
+      <div class="mode-note">34 guru aktif dari 124 target</div>
+    </div>
+  </div>
+
+  <div class="alur-card">
+    <div class="alur-title">Alur data otomatis antar tiga lapis GELAS DIGITAL</div>
+    <div class="alur-nodes">
+      <div class="alur-node-d">
+        <div class="an-icon">&#128221;</div>
+        <div class="an-title">e-LKPD Siswa</div>
+        <div class="an-sub">Lapis 1: aktivitas membaca kritis</div>
+      </div>
+      <div class="alur-arr-d">&#9658;</div>
+      <div class="alur-node-d active">
+        <div class="an-icon">&#128257;</div>
+        <div class="an-title">Rekap Otomatis</div>
+        <div class="an-sub">via PMM+ tanpa input manual</div>
+      </div>
+      <div class="alur-arr-d">&#9658;</div>
+      <div class="alur-node-d active">
+        <div class="an-icon">&#127759;</div>
+        <div class="an-title">Dashboard Spasial</div>
+        <div class="an-sub">Lapis 3: peta indeks literasi</div>
+      </div>
+      <div class="alur-arr-d">&#9658;</div>
+      <div class="alur-node-d">
+        <div class="an-icon">&#127919;</div>
+        <div class="an-title">Rekomendasi Modul</div>
+        <div class="an-sub">Lapis 2: modul adaptif guru</div>
+      </div>
+      <div class="alur-arr-d">&#9658;</div>
+      <div class="alur-node-d">
+        <div class="an-icon">&#128736;</div>
+        <div class="an-title">Intervensi Wilayah</div>
+        <div class="an-sub">prioritas berdasarkan peta</div>
+      </div>
+    </div>
+    <div class="alur-note-d">Sistem terus memperbarui rekomendasinya seiring berjalannya program. GELAS DIGITAL bukan sekadar alat visualisasi, melainkan sistem yang belajar dari datanya sendiri.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">GELAS <span>DIGITAL</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="lapis1-elkpd.html">e-LKPD Siswa</a></li>
+      <li><a href="lapis2-guru.html">Platform Guru</a></li>
+    </ul>
+    <div class="footer-meta">Muhamad Erlangga Saputra | PWK ITB | Litera Fest 2026</div>
+  </div>
+</footer>
+
+<script>
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById('bd1').style.width = '78%';
+    document.getElementById('bd2').style.width = '61%';
+    document.getElementById('bd3').style.width = '38%';
+    document.getElementById('mf1').style.width = '76%';
+    document.getElementById('mf2').style.width = '52%';
+    document.getElementById('mf3').style.width = '31%';
+  }, 500);
+};
+
+function showTip(e, name, akm, guru, jarak) {
+  const tip = document.getElementById('tooltip');
+  tip.style.display = 'block';
+  document.getElementById('tt-name').textContent = name;
+  document.getElementById('tt-akm').textContent = akm;
+  document.getElementById('tt-guru').textContent = guru;
+  document.getElementById('tt-jarak').textContent = jarak;
+  const rect = e.currentTarget.parentElement.getBoundingClientRect();
+  const ex = e.currentTarget.getBoundingClientRect();
+  tip.style.left = (ex.left - rect.left + 18) + 'px';
+  tip.style.top = (ex.top - rect.top - 10) + 'px';
+}
+function hideTip() { document.getElementById('tooltip').style.display = 'none'; }
+
+const filterData = {
+  all:       { s:30, m:8, g:142, a:'59%', n1:'3 kategori wilayah', n2:'Prioritas intervensi segera', n3:'52 kota, 56 pinggiran, 34 3T', n4:'Rata-rata tertimbang' },
+  kota:      { s:10, m:0, g:52, a:'78%', n1:'Sekolah kota', n2:'Tidak ada zona kritis', n3:'Semua mode penuh', n4:'Rata-rata kota' },
+  pinggiran: { s:10, m:2, g:56, a:'61%', n1:'Sekolah pinggiran', n2:'2 zona kritis', n3:'Mode luring aktif', n4:'Rata-rata pinggiran' },
+  '3t':      { s:10, m:6, g:34, a:'38%', n1:'Sekolah 3T', n2:'6 zona kritis', n3:'Mode minimum aktif', n4:'Rata-rata 3T' },
+};
+
+function applyFilter() {
+  const zona = document.getElementById('f-zona').value;
+  const d = filterData[zona] || filterData.all;
+  document.getElementById('mv1').textContent = d.s;
+  document.getElementById('mv2').textContent = d.m;
+  document.getElementById('mv3').textContent = d.g;
+  document.getElementById('mv4').textContent = d.a;
+  document.getElementById('mn1').textContent = d.n1;
+  document.getElementById('mn2').textContent = d.n2;
+  document.getElementById('mn3').textContent = d.n3;
+  document.getElementById('mn4').textContent = d.n4;
+  const tag = document.getElementById('alert-tag');
+  tag.textContent = d.m > 0 ? d.m + ' zona kritis perlu intervensi' : 'Tidak ada zona kritis';
+  tag.style.background = d.m > 0 ? 'var(--red)' : 'var(--teal)';
+  document.querySelectorAll('.priority-item').forEach(item => {
+    item.style.display = (zona === 'all' || item.dataset.zona === zona) ? '' : 'none';
+  });
+}
+
+function highlightPriority(el) {
+  document.querySelectorAll('.priority-item').forEach(i => i.style.background = '');
+  el.style.background = 'rgba(255,255,255,0.06)';
+}
+</script>
+</body>
+</html>
